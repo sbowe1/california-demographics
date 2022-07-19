@@ -27,5 +27,9 @@ def population():
     data = engine.execute("SELECT * FROM population")
     return render_template("income.html", data=data)
 
+@app.route("/analysis")
+def analysis():
+    return render_template("analysis.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -31,7 +31,18 @@
         <section class="row">
             <div class="col-md-12">
                 <h2 class="header">Table</h2>
-                <div class="table"></div>
+                <div class="table">
+                  <table>
+                    {% for row in data %}
+                    <tr>
+                      <td> {{ row[0] }}</td>
+                      <td> {{ row[1] }}</td>
+                      <td> {{ row[2] }}</td>
+                      <td> {{ row[3] }}</td>
+                    </tr> 
+                    {% endfor %}
+                  </table>
+                </div>
             </div>
         </section>
       </div>
