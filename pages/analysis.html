@@ -32,33 +32,25 @@
       <div class="container">
         <section class="row">
             <div class="col-md-12">
-                <h2 class="header">Bubble Chart</h2>
+                <h2 class="header">California Counties' Population, Average Median Income and Unemployment Rate</h2>
                 <div>
                   <canvas id="myChart1"></canvas>
                 </div>
             </div>
         </section>
-        <!-- <section class="row">
-          <div class="col-md-12">
-              <h2 class="header">Graph</h2>
-              <div>
-                <canvas id="myChart2"></canvas>
-              </div>
-          </div>
-      </section> -->
       <section class="row">
         <div class="col-md-12">
-            <h2 class="header">Scatter</h2>
+            <h2 class="header">California Counties' Unemployment Rate and Average Median Income</h2>
             <div>
-              <canvas id="myChart3"></canvas>
+              <canvas id="myChart2"></canvas>
             </div>
         </div>
     </section>
     <section class="row">
       <div class="col-md-12">
-          <h2 class="header">Scatter</h2>
+          <h2 class="header">California Counties' Unemployment Rate and Population</h2>
           <div>
-            <canvas id="myChart4"></canvas>
+            <canvas id="myChart3"></canvas>
           </div>
       </div>
   </section>
@@ -102,11 +94,20 @@
     data: data1,
     options: {
         scales: {
-            y: {
-                title: "Population"
-                }
+            x: {   
+              title: {
+                display: true,
+                text: 'Income'
+              }
+            },
+            y:  {   
+              title: {
+                display: true,
+                text: 'Population'
+              }
             }
         }
+      }
   };
 
   const myChart1 = new Chart(
@@ -115,47 +116,6 @@
   );
 
       </script>
-
-<!-- <script>
-  const incomes1 = [
-    '$119,200', '$94,900', '$78,700', '$70,700', '$80,400', '$70,700', '$119,200', '$70,700', '$86,300', '$70,700', '$70,700', '$72,000', '$70,700', '$75,100', '$70,700', '$70,700', '$70,700', '$70,700', '$77,300', '$70,700', '$143,100', '$70,700', '$70,700', '$70,700', '$70,700', '$81,200', '$81,600', '$109,200', '$92,400', '$103,000', '$86,300', '$72,200', '$75,300', '$86,300', '$89,700', '$75,300', '$92,700', '$143,100', '$75,000', '$97,300', '$143,100', '$87,800', '$141,600', '$110,000', '$70,700', '$80,500', '$70,700', '$95,400', '$102,700', '$70,700', '$75,000', '$70,700', '$70,700', '$70,700', '$71,600', '$97,800', '$92,500', '$75,000'
-  ];
-  const populations1 = [
-    1662370, 1195, 40287, 206640, 45250, 21773, 1161324, 27593, 191054, 1009231, 28788, 135553, 179488, 18982, 907324, 151059, 67651, 31132, 9931338, 156385, 259512, 17066, 90669, 281874, 8606, 13299, 435721, 137518, 101919, 3169542, 407517, 19574, 2424587, 1580624, 64769, 2182343, 3288503, 849475, 782372, 279710, 751596, 443674, 1907693, 266553, 182020, 3225, 43931, 449964, 484674, 551737, 98908, 65374, 16050, 474032, 54791, 840093, 217237, 81988
-  ];
-
-  var data = []
-  for (let i = 0; i < incomes.length; i++) {
-    incomes1[i] = Number(incomes1[i].replace(/[^0-9.-]+/g,""));
-    data.push({x: incomes1[i], y: populations1[i]});
-  }
-
-    const data2 = {
-    datasets: [{
-      label: 'Scatter Dataset',
-      data: data,
-      backgroundColor: 'rgb(255, 99, 132)'
-    }],
-  };
-
-  const config2 = {
-    type: 'scatter',
-    data: data2,
-    options: {
-      scales: {
-        x: {
-          type: 'linear',
-          position: 'bottom'
-        }
-      }
-    }
-  };
-
-  const myChart2 = new Chart(
-    document.getElementById('myChart2'),
-    config2
-  );
-</script> -->
 <script>
 
   const incomes2 = [
@@ -172,7 +132,7 @@
     data.push({x: incomes2[i], y: unemployment2[i]});
   }
 
-  const data3 = {
+  const data2 = {
   datasets: [{
     label: 'Scatter Dataset',
     data: data,
@@ -180,22 +140,30 @@
   }],
 };
 
-const config3 = {
+const config2 = {
   type: 'scatter',
-  data: data3,
+  data: data2,
   options: {
     scales: {
       x: {
-        type: 'linear',
-        position: 'bottom'
+        title: {
+          display: true,
+          text: 'Income'
+        }
+      },
+      y: {    
+        title: {
+          display: true,
+          text: 'Unemployment'
+        }
       }
     }
   }
 };
 
-const myChart3 = new Chart(
-  document.getElementById('myChart3'),
-  config3
+const myChart2 = new Chart(
+  document.getElementById('myChart2'),
+  config2
 );
 </script>
 <script>
@@ -214,7 +182,7 @@ const myChart3 = new Chart(
     data.push({x: populations3[i], y: unemployment3[i]});
   }
 
-  const data4 = {
+  const data3 = {
     datasets: [{
       label: 'Scatter Dataset',
       data: data,
@@ -222,22 +190,30 @@ const myChart3 = new Chart(
     }],
   };
   
-  const config4 = {
+  const config3 = {
     type: 'scatter',
-    data: data4,
+    data: data3,
     options: {
       scales: {
         x: {
-          type: 'linear',
-          position: 'bottom'
+          title: {
+            display: true,
+            text: 'Population'
+          }
+        },
+        y: {    
+          title: {
+            display: true,
+            text: 'Unemployment'
+          }
         }
       }
     }
   };
   
-  const myChart4 = new Chart(
-    document.getElementById('myChart4'),
-    config4
+  const myChart3 = new Chart(
+    document.getElementById('myChart3'),
+    config3
   );
 
 </script>
