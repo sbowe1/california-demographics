@@ -3,8 +3,10 @@ body {
     margin: 0;
   }
   
-  #map-div {
-    height: 500px;
+  #map {
+    position: relative;
+    border: 1px solid black;
+    height: 100%;
   }
   
   .leaflet-popup-content {
