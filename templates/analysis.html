@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> </title>
+    <!-- Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'nav.html' %}
+
+    <div class="container">
+        <section class="row">
+            <div class="col-md-12">
+                <h2 class="header">California Counties' Population, Average Median Income and Unemployment Rate</h2>
+                <div>
+                    <canvas id="myChart1"></canvas>
+                </div>
+            </div>
+        </section>
+        <section class="row">
+            <div class="col-md-12">
+                <h2 class="header">California Counties' Unemployment Rate and Average Median Income</h2>
+                <div>
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </section>
+        <section class="row">
+            <div class="col-md-12">
+                <h2 class="header">California Counties' Unemployment Rate and Population</h2>
+                <div>
+                    <canvas id="myChart3"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- <script type="text/javascript" src="../visuals_charts.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+
+        const incomes = [
+            '$119,200', '$94,900', '$78,700', '$70,700', '$80,400', '$70,700', '$119,200', '$70,700', '$86,300', '$70,700', '$70,700', '$72,000', '$70,700', '$75,100', '$70,700', '$70,700', '$70,700', '$70,700', '$77,300', '$70,700', '$143,100', '$70,700', '$70,700', '$70,700', '$70,700', '$81,200', '$81,600', '$109,200', '$92,400', '$103,000', '$86,300', '$72,200', '$75,300', '$86,300', '$89,700', '$75,300', '$92,700', '$143,100', '$75,000', '$97,300', '$143,100', '$87,800', '$141,600', '$110,000', '$70,700', '$80,500', '$70,700', '$95,400', '$102,700', '$70,700', '$75,000', '$70,700', '$70,700', '$70,700', '$71,600', '$97,800', '$92,500', '$75,000'
+        ];
+        const populations = [
+            1662370, 1195, 40287, 206640, 45250, 21773, 1161324, 27593, 191054, 1009231, 28788, 135553, 179488, 18982, 907324, 151059, 67651, 31132, 9931338, 156385, 259512, 17066, 90669, 281874, 8606, 13299, 435721, 137518, 101919, 3169542, 407517, 19574, 2424587, 1580624, 64769, 2182343, 3288503, 849475, 782372, 279710, 751596, 443674, 1907693, 266553, 182020, 3225, 43931, 449964, 484674, 551737, 98908, 65374, 16050, 474032, 54791, 840093, 217237, 81988
+        ];
+        const unemployment = [
+            '9.00%', '11.70%', '9.50%', '9.40%', '7.90%', '16.50%', '9.10%', '9.70%', '8.50%', '11.70%', '9.10%', '8.60%', '22.80%', '8.00%', '12.90%', '12.00%', '9.80%', '7.40%', '12.30%', '11.20%', '6.90%', '11.20%', '9.20%', '12.60%', '8.90%', '12.20%', '11.20%', '9.00%', '8.20%', '9.00%', '7.50%', '11.10%', '10.20%', '9.50%', '10.00%', '9.70%', '9.50%', '8.00%', '11.60%', '7.90%', '7.00%', '8.20%', '7.20%', '9.80%', '9.00%', '8.30%', '10.10%', '9.80%', '8.10%', '11.10%', '11.40%', '9.20%', '8.30%', '13.60%', '10.70%', '8.80%', '7.80%', '10.70%'
+        ];
+
+        var data = []
+        for (let i = 0; i < incomes.length; i++) {
+            incomes[i] = Number(incomes[i].replace(/[^0-9.-]+/g, ""));
+            unemployment[i] = parseFloat(unemployment[i]);
+            data.push({ x: incomes[i], y: populations[i], r: unemployment[i]});
+        }
+
+        const data1 = {
+            datasets: [{
+                labels: 'First Dataset',
+                data: data,
+                backgroundColor: 'rgb(255, 99, 132)'
+            }]
+        };
+
+        const config1 = {
+            type: 'bubble',
+            data: data1,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Income'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Population'
+                        }
+                    }
+                }
+            }
+        };
+
+        const myChart1 = new Chart(
+            document.getElementById('myChart1'),
+            config1
+        );
+
+    </script>
+    <script>
+
+        const incomes2 = [
+            '$119,200', '$94,900', '$78,700', '$70,700', '$80,400', '$70,700', '$119,200', '$70,700', '$86,300', '$70,700', '$70,700', '$72,000', '$70,700', '$75,100', '$70,700', '$70,700', '$70,700', '$70,700', '$77,300', '$70,700', '$143,100', '$70,700', '$70,700', '$70,700', '$70,700', '$81,200', '$81,600', '$109,200', '$92,400', '$103,000', '$86,300', '$72,200', '$75,300', '$86,300', '$89,700', '$75,300', '$92,700', '$143,100', '$75,000', '$97,300', '$143,100', '$87,800', '$141,600', '$110,000', '$70,700', '$80,500', '$70,700', '$95,400', '$102,700', '$70,700', '$75,000', '$70,700', '$70,700', '$70,700', '$71,600', '$97,800', '$92,500', '$75,000'
+        ];
+        const unemployment2 = [
+            '9.00%', '11.70%', '9.50%', '9.40%', '7.90%', '16.50%', '9.10%', '9.70%', '8.50%', '11.70%', '9.10%', '8.60%', '22.80%', '8.00%', '12.90%', '12.00%', '9.80%', '7.40%', '12.30%', '11.20%', '6.90%', '11.20%', '9.20%', '12.60%', '8.90%', '12.20%', '11.20%', '9.00%', '8.20%', '9.00%', '7.50%', '11.10%', '10.20%', '9.50%', '10.00%', '9.70%', '9.50%', '8.00%', '11.60%', '7.90%', '7.00%', '8.20%', '7.20%', '9.80%', '9.00%', '8.30%', '10.10%', '9.80%', '8.10%', '11.10%', '11.40%', '9.20%', '8.30%', '13.60%', '10.70%', '8.80%', '7.80%', '10.70%'
+        ];
+
+        var data = []
+        for (let i = 0; i < incomes.length; i++) {
+            incomes2[i] = Number(incomes2[i].replace(/[^0-9.-]+/g, ""));
+            unemployment2[i] = parseFloat(unemployment2[i]);
+            data.push({ x: incomes2[i], y: unemployment2[i] });
+        }
+
+        const data2 = {
+            datasets: [{
+                label: 'Scatter Dataset',
+                data: data,
+                backgroundColor: 'rgb(255, 99, 132)'
+            }],
+        };
+
+        const config2 = {
+            type: 'scatter',
+            data: data2,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Income'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Unemployment Rate'
+                        }
+                    }
+                }
+            }
+        };
+
+        const myChart2 = new Chart(
+            document.getElementById('myChart2'),
+            config2
+        );
+    </script>
+    <script> 
+
+        const populations3 = [
+            1662370, 1195, 40287, 206640, 45250, 21773, 1161324, 27593, 191054, 1009231, 28788, 135553, 179488, 18982, 907324, 151059, 67651, 31132, 9931338, 156385, 259512, 17066, 90669, 281874, 8606, 13299, 435721, 137518, 101919, 3169542, 407517, 19574, 2424587, 1580624, 64769, 2182343, 3288503, 849475, 782372, 279710, 751596, 443674, 1907693, 266553, 182020, 3225, 43931, 449964, 484674, 551737, 98908, 65374, 16050, 474032, 54791, 840093, 217237, 81988
+        ]
+
+        const unemployment3 = [
+            '9.00%', '11.70%', '9.50%', '9.40%', '7.90%', '16.50%', '9.10%', '9.70%', '8.50%', '11.70%', '9.10%', '8.60%', '22.80%', '8.00%', '12.90%', '12.00%', '9.80%', '7.40%', '12.30%', '11.20%', '6.90%', '11.20%', '9.20%', '12.60%', '8.90%', '12.20%', '11.20%', '9.00%', '8.20%', '9.00%', '7.50%', '11.10%', '10.20%', '9.50%', '10.00%', '9.70%', '9.50%', '8.00%', '11.60%', '7.90%', '7.00%', '8.20%', '7.20%', '9.80%', '9.00%', '8.30%', '10.10%', '9.80%', '8.10%', '11.10%', '11.40%', '9.20%', '8.30%', '13.60%', '10.70%', '8.80%', '7.80%', '10.70%'
+        ]
+
+        var data = []
+        for (let i = 0; i < incomes.length; i++) {
+            unemployment3[i] = parseFloat(unemployment3[i]);
+            data.push({ x: populations3[i], y: unemployment3[i] });
+        }
+
+        const data3 = {
+            datasets: [{
+                label: 'Scatter Dataset',
+                data: data,
+                backgroundColor: 'rgb(255, 99, 132)'
+            }],
+        };
+
+        const config3 = {
+            type: 'scatter',
+            data: data3,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Population'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Unemployment Rate'
+                        }
+                    }
+                }
+            }
+        };
+
+        const myChart3 = new Chart(
+            document.getElementById('myChart3'),
+            config3
+        );
+
+    </script>
+
+</body>
+
+</html>

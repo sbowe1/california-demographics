@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> </title>
+  <!-- Bootstrap Stylesheet -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+
+
+</head>
+
+<body>
+  <!-- Navbar -->
+  {% include 'nav.html' %}
+  <div class="container">
+    <section class="row">
+      <div class="col-md-12">
+        <h2 class="header">Map</h2>
+        <div class="map">{{data}}</div>
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-md-12">
+        <h2 class="header">Graph</h2>
+        <div class="graph"></div>
+        <canvas id="Income" width="400" height="400"></canvas>
+          <script>
+            const xlabels = [];
+            getData();
+            chartIt();
+            
+            async function chartIt() {
+              await getData()
+            const ctx = document.getElementById('Income');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [<th>{{ column2 }}</th>],
+                    datasets: [{
+                        label: 'Median Income of Each County in California',
+                        data: [column2],
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+            });
+          }
+            </script>
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-md-12">
+        <h2 class="header">Table</h2>
+        <div class="table table-striped">
+          <table>
+            <tr>
+              <th>County</th>
+              <th>{{ column2 }}</th>
+            </tr>
+            {% for row in data %}
+            <tr>
+              <td> {{ row[0] }}</td>
+              <td> {{ row[1] }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+
+</html>
