@@ -49,5 +49,19 @@
     </section>
   </div>
 </body>
+<script>
+  var key = {{key|safe}};
+  var value = {{value|safe}};
+  var num_value = []
+  console.log(typeof value[0])
+  if (typeof value[0] == "string") {
+    for (var i =0; i<value.length;i++){
+      num_value.push(Number(value[i].replace(/[^0-9.-]+/g,"")));
+    };
+    value = num_value
+  };
+  console.log(typeof value[0]);
+
+</script>
 
 </html>

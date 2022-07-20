@@ -12,8 +12,14 @@ def home():
 def income():
     engine = create_engine(f"sqlite:///resources/sqlite/income.sqlite")
     data = engine.execute("SELECT * FROM income")
+    key=[]
+    value=[]
+    for row in data:
+        key.append(row['county'])
+        value.append(row['median_income'])
+    data = engine.execute("SELECT * FROM income")
     column2 = 'Median Income'
-    return render_template("income.html", data=data, column2 = column2)
+    return render_template("income.html", data=data, column2 = column2,key=key, value=value)
 
 @app.route("/employment")
 def employment():
@@ -26,12 +32,14 @@ def employment():
 def population():
     engine = create_engine(f"sqlite:///resources/sqlite/population.sqlite")
     data = engine.execute("SELECT * FROM population")
+    key=[]
+    value=[]
+    for row in data:
+        key.append(row['county'])
+        value.append(row['total_population'])
+    data = engine.execute("SELECT * FROM population")
     column2 = 'Total Population'
-    return render_template("income.html", data=data, column2=column2)
-
-@app.route("/analysis")
-def analysis():
-    return render_template("analysis.html")
+    return render_template("income.html", data=data, column2=column2, key=key, value=value)
 
 @app.route("/analysis")
 def analysis():
