@@ -61,12 +61,12 @@
         for (let i = 0; i < incomes.length; i++) {
             incomes[i] = Number(incomes[i].replace(/[^0-9.-]+/g, ""));
             unemployment[i] = parseFloat(unemployment[i]);
-            data.push({ x: incomes[i], y: populations[i], r: unemployment[i] });
+            data.push({ x: incomes[i], y: populations[i], r: unemployment[i]});
         }
 
         const data1 = {
             datasets: [{
-                label: 'First Dataset',
+                labels: 'First Dataset',
                 data: data,
                 backgroundColor: 'rgb(255, 99, 132)'
             }]
@@ -79,7 +79,7 @@
                 plugins: {
                     legend: {
                         display: false
-                    }
+                    },
                 },
                 scales: {
                     x: {
@@ -147,7 +147,7 @@
                     y: {
                         title: {
                             display: true,
-                            text: 'Unemployment'
+                            text: 'Unemployment Rate'
                         }
                     }
                 }
@@ -159,7 +159,7 @@
             config2
         );
     </script>
-    <script>
+    <script> 
 
         const populations3 = [
             1662370, 1195, 40287, 206640, 45250, 21773, 1161324, 27593, 191054, 1009231, 28788, 135553, 179488, 18982, 907324, 151059, 67651, 31132, 9931338, 156385, 259512, 17066, 90669, 281874, 8606, 13299, 435721, 137518, 101919, 3169542, 407517, 19574, 2424587, 1580624, 64769, 2182343, 3288503, 849475, 782372, 279710, 751596, 443674, 1907693, 266553, 182020, 3225, 43931, 449964, 484674, 551737, 98908, 65374, 16050, 474032, 54791, 840093, 217237, 81988
@@ -202,7 +202,7 @@
                     y: {
                         title: {
                             display: true,
-                            text: 'Unemployment'
+                            text: 'Unemployment Rate'
                         }
                     }
                 }
