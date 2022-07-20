@@ -30,17 +30,11 @@
   <!-- Navbar -->
   {% include 'nav.html' %}
   <div class="container">
-    <section id="map-div" class="row">
-      <div class="col-md-12">
-        <h2 class="header">Map</h2>
-        <div id="map"></div>
-      </div>
-    </section>
     <section class="row">
       <div class="col-md-12">
         <h2 class="header">{{ column2 }} of Each County in California</h2>
         <div class="graph">
-          <canvas id="Income" width="1000" height="400"></canvas>
+          <canvas id="graph" width="1000" height="400"></canvas>
           <script>
             var key = {{ key| safe}};
             var value = {{ value| safe}};
@@ -52,7 +46,7 @@
               value = num_value
             };
 
-            const ctx = document.getElementById('Income');
+            const ctx = document.getElementById('graph');
             const Income = new Chart(ctx, {
               type: 'bar',
               data: {
@@ -91,9 +85,9 @@
       </div>
     </section>
     <section class="row">
-      <div class="col-md-12">
-        <h2 class="header">Table</h2>
-        <div class="table table-striped">
+      <div class="col-md-3">
+        <h2 class="header">Data</h2>
+        <div class="table table-striped" style="max-height: 400px; overflow: auto">
           <table>
             <tr>
               <th>County</th>
@@ -107,6 +101,10 @@
             {% endfor %}
           </table>
         </div>
+      </div>
+      <div class="col-md-9">
+        <h2 class="header">Choropleth Map by {{column2}}</h2>
+        <div id="map" style="height: 400px"></div>
       </div>
     </section>
   </div>
@@ -128,7 +126,7 @@
   // Map
   var map = L.map('map', {
     center: [36.7783, -119.4179],
-    zoom: 3
+    zoom: 7
   });
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -139,33 +137,43 @@
 
   d3.json(geoData).then(data => {
     let counter = 0;
+    let max = value.reduce((a, b) => { return Math.max(a, b) });
+    let min = value.reduce((a, b) => { return Math.min(a, b) });
+    let limit2 = ((max - min) / 3) + min;
+    let limit3 = 2 * ((max - min) / 3) + min;
+
+    for (var i = 0; i < value.length; i++) { 
+      data.features[i].properties['Value'] = value[i]
+    }
 
     geojson = L.choropleth(data, {
-      valueProperty: value,
+      valueProperty: 'Value',
       scale: ['pink', 'red'],
+      limits: [min, limit2, limit3, max],
       steps: 4,
       mode: 'q',
       style: {
-        color: '#fff',
+        color: 'gray',
         weight: 1,
-        fillOpacity: 0.8
+        fillOpacity: 0.6
       },
 
       onEachFeature: function (feature, layer) {
         layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
-          'Income: $' + value[counter]);
+          '{{column2 | safe}}: ' + value[counter]);
         counter++;
       }
     }).addTo(map);
+    console.log(geojson);
 
     var legend = L.control({ position: 'topright' });
     legend.onAdd = function () {
       var div = L.DomUtil.create("div", "info legend");
-      var limits = geojson.options.limits;
+      var limits = [min, limit2, limit3, max];
       var colors = geojson.options.colors;
       var labels = [];
 
-      var legendInfo = '<h1>California Counties by Income</h1><br>' +
+      var legendInfo = '<h6>{{column2 | safe}}</h6><br>' +
         '<div class=\"labels\">' +
         "<div class=\"min\">" + limits[0] + "</div>" +
         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
