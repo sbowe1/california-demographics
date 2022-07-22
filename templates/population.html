@@ -32,23 +32,155 @@
     <div class="container">
         <section class="row">
             <div class="col-md-12">
-                <h2 class="header">Map</h2>
-                <div class="map"></div>
-            </div>
-        </section>
-        <section class="row">
-            <div class="col-md-12">
-                <h2 class="header">Graph</h2>
+                <h2 class="header">{{ column2 }} of Each County in California</h2>
                 <div class="graph"></div>
+                <canvas id="Population" width="1000" height="400"></canvas>
             </div>
         </section>
         <section class="row">
-            <div class="col-md-12">
-                <h2 class="header">Table</h2>
-                <div class="table"></div>
-            </div>
+            <div class="col-md-3">
+                <h2 class="header">Data</h2>
+                <div class="table table-striped" style="max-height: 400px; overflow: auto">
+                  <table>
+                    <tr>
+                      <th>County</th>
+                      <th>{{ column2 }}</th>
+                    </tr>
+                    {% for row in data %}
+                    <tr>
+                      <td> {{ row[0] }}</td>
+                      <td> {{ row[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <h2 class="header">Choropleth Map by {{column2}}</h2>
+                <div id="map" style="height: 400px"></div>
+              </div>
         </section>
     </div>
 </body>
+
+<script>
+var key = {{key|safe}};
+var value = {{value|safe}};
+var num_value = []
+console.log(typeof value[0])
+if (typeof value[0] == "string") {
+for (var i =0; i<value.length;i++){
+    num_value.push(Number(value[i].replace(/[^0-9.-]+/g,"")));
+};
+value = num_value
+};
+console.log(typeof value[0]);
+const ctx = document.getElementById('Population');
+const Population = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: key,
+        datasets: [{
+            label : 'Population',
+            data: value,
+            backgroundColor: ['rgba(75, 192, 192, 0.2)'],
+            borderColor: ['rgba(75, 192, 192, 1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+            display: false
+            }
+        },
+        scales: {
+            x: {
+            title: {
+                display: true,
+                text: 'County'
+            }
+            },
+            y: {
+            title: {
+                display: true,
+                text: '{{column2 | safe}}'
+            }
+            }
+        }
+        }
+    });
+</script>
+
+<script>
+// Map
+var map = L.map('map', {
+    center: [36.7783, -119.4179],
+    zoom: 7
+});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var geoData = '../static/Counties_In_California.geojson';
+var geojson;
+
+d3.json(geoData).then(data => {
+    let counter = 0;
+    let max = value.reduce((a, b) => { return Math.max(a, b) });
+    let min = value.reduce((a, b) => { return Math.min(a, b) });
+    let limit2 = ((max - min) / 3) + min;
+    let limit3 = 2 * ((max - min) / 3) + min;
+
+    for (var i = 0; i < value.length; i++) { 
+    data.features[i].properties['Value'] = value[i]
+    }
+
+    geojson = L.choropleth(data, {
+    valueProperty: 'Value',
+    scale: ['pink', 'red'],
+    limits: [min, limit2, limit3, max],
+    steps: 4,
+    mode: 'q',
+    style: {
+        color: 'gray',
+        weight: 1,
+        fillOpacity: 0.6
+    },
+
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
+        '{{column2 | safe}}: ' + value[counter]);
+        counter++;
+    }
+    }).addTo(map);
+    console.log(geojson);
+
+    var legend = L.control({ position: 'topright' });
+    legend.onAdd = function () {
+    var div = L.DomUtil.create("div", "info legend");
+    var limits = [min, limit2, limit3, max];
+    var colors = geojson.options.colors;
+    var labels = [];
+
+    var legendInfo = '<h6>{{column2 | safe}}</h6><br>' +
+        '<div class=\"labels\">' +
+        "<div class=\"min\">" + limits[0] + "</div>" +
+        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+        "</div>";
+
+    div.innerHTML = legendInfo;
+
+    limits.forEach(function (limit, index) {
+        labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+    });
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+    };
+    legend.addTo(map);
+});
+
+</script>
 
 </html>
