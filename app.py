@@ -57,7 +57,25 @@ def population():
 
 @app.route("/analysis")
 def analysis():
-    return render_template("analysis.html")
+    engine = create_engine(f"sqlite:///resources/sqlite/income.sqlite")
+    data = engine.execute("SELECT * FROM income")
+    county = []
+    income = []
+    for row in data:
+        county.append(row['county'])
+        income.append(row['median_income'])
+    engine = create_engine(f"sqlite:///resources/sqlite/unemployment.sqlite")
+    rate = []
+    data = engine.execute("SELECT rate FROM unemployment")
+    for row in data:
+        rate.append(row[0])
+    engine = create_engine(f"sqlite:///resources/sqlite/population.sqlite")
+    population = []
+    data = engine.execute("SELECT total_population FROM population")
+    for row in data:
+        population.append(row[0])
+
+    return render_template("analysis.html", county=county, income=income, rate=rate, population=population)
 
 
 if __name__ == "__main__":
