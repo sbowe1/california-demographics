@@ -6,7 +6,6 @@ body {
 #map {
     position: relative;
     border: 1px solid black;
-    z-index: -1;
 }
 
 .leaflet-popup-content {
