@@ -166,7 +166,7 @@
 
             onEachFeature: function (feature, layer) {
                 layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
-                    '{{column2 | safe}}: ' + feature.properties.Rate);
+                    'Unemployment Rate: ' + feature.properties.Rate);
                 counter++;
             }
         }).addTo(map);
