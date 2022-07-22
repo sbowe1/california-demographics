@@ -89,16 +89,20 @@
         <h2 class="header">Data</h2>
         <div class="table table-striped" style="max-height: 400px; overflow: auto">
           <table>
-            <tr>
-              <th>County</th>
-              <th>{{ column2 }}</th>
-            </tr>
-            {% for row in data %}
-            <tr>
-              <td> {{ row[0] }}</td>
-              <td> {{ row[1] }}</td>
-            </tr>
-            {% endfor %}
+            <thead style="position: sticky; top: 0;" class="thead-light">
+              <tr>
+                <th>County</th>
+                <th>{{ column2 }}</th>
+              </tr>
+            </thead>
+            <tbody> 
+              {% for row in data %}
+              <tr>
+                <td> {{ row[0] }}</td>
+                <td> {{ row[1] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>
