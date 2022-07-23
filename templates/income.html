@@ -89,16 +89,20 @@
         <h2 class="header">Data</h2>
         <div class="table table-striped" style="max-height: 400px; overflow: auto">
           <table>
-            <tr>
-              <th>County</th>
-              <th>{{ column2 }}</th>
-            </tr>
-            {% for row in data %}
-            <tr>
-              <td> {{ row[0] }}</td>
-              <td> {{ row[1] }}</td>
-            </tr>
-            {% endfor %}
+            <thead style="position: sticky; top: 0;" class="thead-light">
+              <tr>
+                <th>County</th>
+                <th>{{ column2 }}</th>
+              </tr>
+            </thead>
+            <tbody> 
+              {% for row in data %}
+              <tr>
+                <td> {{ row[0] }}</td>
+                <td> {{ row[1] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>
@@ -136,12 +140,6 @@
   var geojson;
 
   d3.json(geoData).then(data => {
-    let counter = 0;
-    let max = value.reduce((a, b) => { return Math.max(a, b) });
-    let min = value.reduce((a, b) => { return Math.min(a, b) });
-    let limit2 = ((max - min) / 3) + min;
-    let limit3 = 2 * ((max - min) / 3) + min;
-
     for (var i = 0; i < value.length; i++) { 
       data.features[i].properties['Value'] = value[i]
     }
@@ -149,8 +147,7 @@
     geojson = L.choropleth(data, {
       valueProperty: 'Value',
       scale: ['pink', 'red'],
-      limits: [min, limit2, limit3, max],
-      steps: 4,
+      steps: 5,
       mode: 'q',
       style: {
         color: 'gray',
@@ -160,8 +157,7 @@
 
       onEachFeature: function (feature, layer) {
         layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
-          '{{column2 | safe}}: ' + value[counter]);
-        counter++;
+          '{{column2 | safe}}: ' + feature.properties.Value);
       }
     }).addTo(map);
     console.log(geojson);
@@ -169,7 +165,7 @@
     var legend = L.control({ position: 'topright' });
     legend.onAdd = function () {
       var div = L.DomUtil.create("div", "info legend");
-      var limits = [min, limit2, limit3, max];
+      var limits = geojson.options.limits;
       var colors = geojson.options.colors;
       var labels = [];
 

@@ -102,20 +102,24 @@
                 <h2 class="header">Data</h2>
                 <div class="table table-striped" style="max-height: 400px; overflow: auto">
                     <table>
-                        <tr>
-                            <th>County</th>
-                            <th>Employed</th>
-                            <th>Unemployed</th>
-                            <th>Unemployment Rate</th>
-                        </tr>
-                        {% for row in data %}
-                        <tr>
-                            <td> {{ row[0] }}</td>
-                            <td> {{ row[1] }}</td>
-                            <td> {{ row[2] }}</td>
-                            <td> {{ row[3] }}</td>
-                        </tr>
-                        {% endfor %}
+                        <thead style="position: sticky; top: 0;" class="thead-light">
+                            <tr>
+                                <th>County</th>
+                                <th>Employed</th>
+                                <th>Unemployed</th>
+                                <th>Unemployment Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in data %}
+                            <tr>
+                                <td> {{ row[0] }}</td>
+                                <td> {{ row[1] }}</td>
+                                <td> {{ row[2] }}</td>
+                                <td> {{ row[3] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -147,8 +151,6 @@
     var geojson;
 
     d3.json(geoData).then(data => {
-        let counter = 0;
-
         for (var i = 0; i < rate.length; i++) {
             data.features[i].properties['Rate'] = rate[i]
         }
@@ -167,7 +169,6 @@
             onEachFeature: function (feature, layer) {
                 layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
                     'Unemployment Rate: ' + feature.properties.Rate);
-                counter++;
             }
         }).addTo(map);
         console.log(geojson);

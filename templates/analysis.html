@@ -66,7 +66,7 @@
             datasets: [{
                 labels: 'First Dataset',
                 data: data,
-                backgroundColor: 'rgb(255, 99, 132)'
+                backgroundColor: 'rgb(255, 99, 132, 0.6)'
             }]
         };
 
@@ -78,6 +78,13 @@
                     legend: {
                         display: false
                     },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                return context.raw.County + ' County: Income $' + context.raw.x + ', Population ' + context.raw.y + ', Unemployment Rate ' + context.raw.r + '%';
+                            }
+                        }
+                    }
                 },
                 scales: {
                     x: {
@@ -107,14 +114,14 @@
         var data = []
         for (let i = 0; i < incomes.length; i++) {
             unemployment[i] = parseFloat(unemployment[i]);
-            data.push({ x: incomes[i], y: unemployment[i] });
+            data.push({ x: incomes[i], y: unemployment[i], County: counties[i] });
         }
 
         const data2 = {
             datasets: [{
                 label: 'Scatter Dataset',
                 data: data,
-                backgroundColor: 'rgb(255, 99, 132)'
+                backgroundColor: 'rgb(255, 99, 132, 0.8)'
             }],
         };
 
@@ -125,6 +132,13 @@
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                return context.raw.County + ' County: Income $' + context.raw.x + ', Unemployment Rate ' + context.raw.y + '%';
+                            }
+                        }
                     }
                 },
                 scales: {
@@ -154,14 +168,14 @@
         var data = []
         for (let i = 0; i < incomes.length; i++) {
             unemployment[i] = parseFloat(unemployment[i]);
-            data.push({ x: populations[i], y: unemployment[i] });
+            data.push({ x: populations[i], y: unemployment[i], County: counties[i] });
         }
 
         const data3 = {
             datasets: [{
                 label: 'Scatter Dataset',
                 data: data,
-                backgroundColor: 'rgb(255, 99, 132)'
+                backgroundColor: 'rgb(255, 99, 132, 0.8)'
             }],
         };
 
@@ -172,6 +186,13 @@
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                return context.raw.County + ' County: Population ' + context.raw.x + ', Unemployment Rate ' + context.raw.y + '%';
+                            }
+                        }
                     }
                 },
                 scales: {
