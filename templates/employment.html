@@ -151,8 +151,6 @@
     var geojson;
 
     d3.json(geoData).then(data => {
-        let counter = 0;
-
         for (var i = 0; i < rate.length; i++) {
             data.features[i].properties['Rate'] = rate[i]
         }
@@ -171,7 +169,6 @@
             onEachFeature: function (feature, layer) {
                 layer.bindPopup('<strong>' + feature.properties.CountyName + '</strong><br /><br />' +
                     'Unemployment Rate: ' + feature.properties.Rate);
-                counter++;
             }
         }).addTo(map);
         console.log(geojson);
