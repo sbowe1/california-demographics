@@ -23,6 +23,7 @@
     <script type="text/javascript" src="../static/choropleth.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
 </head>
 
 <body>
@@ -75,6 +76,19 @@ for (var i =0; i<value.length;i++){
 value = num_value
 };
 console.log(typeof value[0]);
+const clean_data = value
+    .filter(({ x, y }) => {
+      return (
+        typeof x === typeof y &&  // filter out one string & one number
+        !isNaN(x) &&              // filter out `NaN`
+        !isNaN(y) &&
+        Math.abs(x) !== Infinity && 
+        Math.abs(y) !== Infinity
+      );
+    })
+    .map(({ x, y }) => {
+      return [x, y];             // we need a list of [[x1, y1], [x2, y2], ...]
+    });
 const ctx = document.getElementById('Population');
 const Population = new Chart(ctx, {
     type: 'bar',
@@ -86,8 +100,13 @@ const Population = new Chart(ctx, {
             backgroundColor: ['rgba(75, 192, 192, 0.2)'],
             borderColor: ['rgba(75, 192, 192, 1)'],
             borderWidth: 1
-        }]
+        },{
+            type: 'line',
+            label: 'Regression',
+            data : useful_points,
+        }],
     },
+    
     options: {
         plugins: {
             legend: {
