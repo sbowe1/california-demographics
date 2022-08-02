@@ -1,5 +1,5 @@
 # Unemployment, Income, and Population of California Counties
-The Flask app is available for remote viewing at [https://california-unemployment.herokuapp.com/](https://california-unemployment.herokuapp.com/).
+The Flask app is available for remote viewing at [https://california-demographics.herokuapp.com/](https://california-demographics.herokuapp.com/).
 
 ## Project Overview
 We are researching the demographics for California’s counties including the
